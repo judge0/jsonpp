@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+    <title>JSON Pretty Print</title>
+    <style>
+        #content {
+            font-family: 'Courier New', Courier, monospace;
+        }
+    </style>
+</head>
+<body>
+    <pre id="content"></pre>
+    <script type="text/javascript">
+    $(document).ready(function() {
+        var $content = $("#content");
+        var url = location.search.substr(1).trim();
+        if (url === "") {
+            $content.html("<p style=\"color: red;\">Please provide URL.</p> Example: https://jsonpp.judge0.com?<strong>https://api.judge0.com/languages</strong>");
+        }
+        else {
+            $.ajax({
+                url: url,
+                type: "GET",
+                success: function(data, textStatus, jqXHR) {
+                    if (typeof data === "object") {
+                        $content.html(JSON.stringify(data, null, 4));
+                    }
+                    else {
+                        $content.html("<p style=\"color: red;\">Response is not a JSON.</p>");
+                    }
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    $content.html(JSON.stringify(jqXHR, null, 4));
+                }
+            });
+        }
+    });
+    </script>
+</body>
+</html>
